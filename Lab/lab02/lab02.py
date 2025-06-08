@@ -7,14 +7,15 @@ def composite_identity(f, g):
 
     >>> add_one = lambda x: x + 1        # adds one to x
     >>> square = lambda x: x**2          # squares x [returns x^2]
-    >>> b1 = composite_identity(square, add_one)
+            >>> b1 = composite_identity(square, add_one)
+
     >>> b1(0)                            # (0 + 1) ** 2 == 0 ** 2 + 1
     True
     >>> b1(4)                            # (4 + 1) ** 2 != 4 ** 2 + 1
     False
     """
     "*** YOUR CODE HERE ***"
-
+    return lambda x: f(g(x)) == g(f(x))
 
 def sum_digits(y):
     """Return the sum of the digits of non-negative integer y."""
@@ -60,6 +61,17 @@ def count_cond(condition):
     8
     """
     "*** YOUR CODE HERE ***"
+    def count(n):
+        i = 1
+        k = 0
+        while i <= n:
+           if condition(n, i):
+               k += 1
+           i +=  1
+        return k
+
+    return count
+
 
 
 def multiple(a, b):
@@ -71,6 +83,11 @@ def multiple(a, b):
     42
     """
     "*** YOUR CODE HERE ***"
+    i = 1
+    while True:
+        if i % a == 0 and i % b == 0:
+            return i
+        i += 1
 
 
 
@@ -101,4 +118,22 @@ def cycle(f1, f2, f3):
     19
     """
     "*** YOUR CODE HERE ***"
+    original_list = [f1, f2, f3]
 
+    def do(n):
+
+        def do_cycle(x):
+            if n == 0 :
+             return x
+
+            for i in range(1, n+1):
+                # 计算当前要添加的元素的索引（使用模运算实现循环）
+                index = (i - 1) % len(original_list)
+                # 添加对应元素
+                f = original_list[index]
+                x = f(x)
+            return x
+
+        return do_cycle
+
+    return do
